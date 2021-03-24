@@ -1,6 +1,6 @@
 
 /*
- * ingeniamotion
+ * ingenialogger
  *
  * Copyright (c) 2020 Ingenia Motion Control.
  */
