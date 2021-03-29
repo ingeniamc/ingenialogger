@@ -6,10 +6,10 @@ name = "pypi"
 [packages]
 
 [dev-packages]
-sphinx = "*"
-sphinx-rtd-theme = "*"
-sphinxcontrib-bibtex = "*"
-nbsphinx = "*"
+sphinx = "==3.5.3"
+sphinx-rtd-theme = "==0.5.1"
+sphinxcontrib-bibtex = "==2.2.0"
+nbsphinx = "==0.8.2"
 
 [requires]
 python_version = "3.6"
