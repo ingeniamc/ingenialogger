@@ -1,14 +1,40 @@
 import logging
 
 from queue import Queue
+from enum import IntEnum
 from logging.handlers import QueueHandler
 
 FORMAT = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
 logger_dict = {}
 
 
+class LoggingLevel(IntEnum):
+    NOTSET = 0
+    DEBUG = 10
+    USER_DEBUG = 15,
+    INFO = 20
+    USER_INFO = 25,
+    WARNING = 30
+    USER_WARNING = 35,
+    ERROR = 40
+    USER_ERROR = 45
+    CRITICAL = 50
+
+
 class IngeniaAdapter(logging.LoggerAdapter):
     custom_fields = ["axis", "drive", "code_error"]
+
+    def user_debug(self, msg, *args, **kwargs):
+        self.log(LoggingLevel.USER_DEBUG, msg, *args, **kwargs)
+
+    def user_info(self, msg, *args, **kwargs):
+        self.log(LoggingLevel.USER_INFO, msg, *args, **kwargs)
+
+    def user_warning(self, msg, *args, **kwargs):
+        self.log(LoggingLevel.USER_WARNING, msg, *args, **kwargs)
+
+    def user_error(self, msg, *args, **kwargs):
+        self.log(LoggingLevel.USER_ERROR, msg, *args, **kwargs)
 
     def process(self, msg, kwargs):
         extra_list = []
@@ -22,7 +48,7 @@ class IngeniaAdapter(logging.LoggerAdapter):
         return '%s%s' % (extra_str, msg), kwargs
 
 
-def configure_logging(level=logging.WARNING, queue=False, file=None):
+def configure_logger(level=logging.WARNING, queue=False, file=None):
     """
     Do Ingenia configuration for the logging system. By default configure a StreamHandler, but can configure a
     QueueHandler and FileHandler.
@@ -36,6 +62,11 @@ def configure_logging(level=logging.WARNING, queue=False, file=None):
     Returns:
         queue.Queue or None: if queue is ``True`` return the queue, if it is ``False`` return ``None``.
     """
+    logging.addLevelName(LoggingLevel.USER_DEBUG, LoggingLevel.USER_DEBUG.name)
+    logging.addLevelName(LoggingLevel.USER_INFO, LoggingLevel.USER_INFO.name)
+    logging.addLevelName(LoggingLevel.USER_WARNING, LoggingLevel.USER_WARNING.name)
+    logging.addLevelName(LoggingLevel.USER_ERROR, LoggingLevel.USER_ERROR.name)
+
     root_logger = logging.getLogger()
     formatter = logging.Formatter(FORMAT)
     root_logger.setLevel(level)
