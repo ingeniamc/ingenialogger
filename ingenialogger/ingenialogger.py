@@ -40,7 +40,7 @@ class IngeniaAdapter(logging.LoggerAdapter):
         extra_list = []
         for field_name in self.custom_fields:
             field_value = kwargs.pop(field_name, self.extra.get(field_name))
-            if field_value:
+            if field_value is not None:
                 extra_list.append('{}="{}"'.format(field_name, field_value))
         extra_str = ""
         if extra_list:
