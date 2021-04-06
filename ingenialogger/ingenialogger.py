@@ -5,7 +5,6 @@ from enum import IntEnum
 from logging.handlers import QueueHandler
 
 FORMAT = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
-logger_dict = {}
 
 
 class LoggingLevel(IntEnum):
