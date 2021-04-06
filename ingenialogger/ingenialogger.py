@@ -39,7 +39,7 @@ class IngeniaAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
         extra_list = []
         for field_name in self.custom_fields:
-            field_value = kwargs.pop(field_name, None)
+            field_value = kwargs.pop(field_name, self.extra.get(field_name))
             if field_value:
                 extra_list.append('{}="{}"'.format(field_name, field_value))
         extra_str = ""
@@ -88,18 +88,24 @@ def configure_logger(level=logging.WARNING, queue=False, file=None):
         return log_queue
 
 
-def get_logger(name):
+def get_logger(name, axis=None, drive=None, code_error=None):
     """
     Return logger with target name.
 
     Args:
-        name: logger name.
+        name (str): logger name.
+        axis (int): default value for logger axis. ``None`` as a default.
+        drive (str): default value for logger drive. ``None`` as a default.
+        code_error (str): default value for logger drive. ``None`` as a default.
 
     Returns:
         logging.LoggerAdapter: return logger
 
     """
     logger = logging.getLogger(name)
-    if name not in logger_dict:
-        logger_dict[name] = IngeniaAdapter(logger, {})
-    return logger_dict[name]
+    extra = {
+        "axis": axis,
+        "drive": drive,
+        "code_error": code_error
+    }
+    return IngeniaAdapter(logger, extra)
