@@ -49,13 +49,14 @@ def test_configure_logger_queue():
 
 
 @pytest.mark.parametrize("level", [LoggingLevel.DEBUG,
-                                   LoggingLevel.USER_DEBUG,
+                                   LoggingLevel.PUBLIC_DEBUG,
                                    LoggingLevel.INFO,
-                                   LoggingLevel.USER_INFO,
+                                   LoggingLevel.PUBLIC_INFO,
                                    LoggingLevel.WARNING,
-                                   LoggingLevel.USER_WARNING,
+                                   LoggingLevel.PUBLIC_WARNING,
                                    LoggingLevel.ERROR,
-                                   LoggingLevel.USER_ERROR,
+                                   LoggingLevel.PUBLIC_FAULT,
+                                   LoggingLevel.PUBLIC_ERROR,
                                    LoggingLevel.CRITICAL])
 def test_configure_logger_levels(caplog, level):
     root_logger = logging.getLogger("test")
