@@ -127,7 +127,7 @@ def get_logger(name, axis=None, drive=None, category=None, code_error=None):
         code_error (str): default value for error identifier. ``None`` as a default.
 
     Returns:
-        logging.LoggerAdapter: return logger
+        IngeniaAdapter: return logger
 
     """
     logger = logging.getLogger(name)
