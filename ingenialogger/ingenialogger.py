@@ -10,30 +10,34 @@ FORMAT = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
 class LoggingLevel(IntEnum):
     NOTSET = 0
     DEBUG = 10
-    USER_DEBUG = 15,
+    PUBLIC_DEBUG = 15,
     INFO = 20
-    USER_INFO = 25,
+    PUBLIC_INFO = 25,
     WARNING = 30
-    USER_WARNING = 35,
+    PUBLIC_WARNING = 35,
     ERROR = 40
-    USER_ERROR = 45
+    PUBLIC_FAULT = 43
+    PUBLIC_ERROR = 45
     CRITICAL = 50
 
 
 class IngeniaAdapter(logging.LoggerAdapter):
-    custom_fields = ["axis", "drive", "code_error"]
+    custom_fields = ["axis", "drive", "category", "code_error"]
 
-    def user_debug(self, msg, *args, **kwargs):
-        self.log(LoggingLevel.USER_DEBUG, msg, *args, **kwargs)
+    def public_debug(self, msg, *args, **kwargs):
+        self.log(LoggingLevel.PUBLIC_DEBUG, msg, *args, **kwargs)
 
-    def user_info(self, msg, *args, **kwargs):
-        self.log(LoggingLevel.USER_INFO, msg, *args, **kwargs)
+    def public_info(self, msg, *args, **kwargs):
+        self.log(LoggingLevel.PUBLIC_INFO, msg, *args, **kwargs)
 
-    def user_warning(self, msg, *args, **kwargs):
-        self.log(LoggingLevel.USER_WARNING, msg, *args, **kwargs)
+    def public_warning(self, msg, *args, **kwargs):
+        self.log(LoggingLevel.PUBLIC_WARNING, msg, *args, **kwargs)
 
-    def user_error(self, msg, *args, **kwargs):
-        self.log(LoggingLevel.USER_ERROR, msg, *args, **kwargs)
+    def public_error(self, msg, *args, **kwargs):
+        self.log(LoggingLevel.PUBLIC_ERROR, msg, *args, **kwargs)
+
+    def public_fault(self, msg, *args, **kwargs):
+        self.log(LoggingLevel.PUBLIC_FAULT, msg, *args, **kwargs)
 
     def process(self, msg, kwargs):
         extra_list = []
@@ -75,10 +79,11 @@ def configure_logger(level=logging.WARNING, queue=False, file=None):
     Returns:
         queue.Queue or None: if queue is ``True`` return the queue, if it is ``False`` return ``None``.
     """
-    logging.addLevelName(LoggingLevel.USER_DEBUG, LoggingLevel.USER_DEBUG.name)
-    logging.addLevelName(LoggingLevel.USER_INFO, LoggingLevel.USER_INFO.name)
-    logging.addLevelName(LoggingLevel.USER_WARNING, LoggingLevel.USER_WARNING.name)
-    logging.addLevelName(LoggingLevel.USER_ERROR, LoggingLevel.USER_ERROR.name)
+    logging.addLevelName(LoggingLevel.PUBLIC_DEBUG, LoggingLevel.PUBLIC_DEBUG.name)
+    logging.addLevelName(LoggingLevel.PUBLIC_INFO, LoggingLevel.PUBLIC_INFO.name)
+    logging.addLevelName(LoggingLevel.PUBLIC_WARNING, LoggingLevel.PUBLIC_WARNING.name)
+    logging.addLevelName(LoggingLevel.PUBLIC_ERROR, LoggingLevel.PUBLIC_ERROR.name)
+    logging.addLevelName(LoggingLevel.PUBLIC_FAULT, LoggingLevel.PUBLIC_FAULT.name)
 
     root_logger = logging.getLogger()
     formatter = logging.Formatter(FORMAT)
@@ -110,7 +115,7 @@ def configure_logger(level=logging.WARNING, queue=False, file=None):
         return ingenia_handlers.queue_handler.queue
 
 
-def get_logger(name, axis=None, drive=None, code_error=None):
+def get_logger(name, axis=None, drive=None, category=None, code_error=None):
     """
     Return logger with target name.
 
@@ -118,16 +123,18 @@ def get_logger(name, axis=None, drive=None, code_error=None):
         name (str): logger name.
         axis (int): default value for logger axis. ``None`` as a default.
         drive (str): default value for logger drive. ``None`` as a default.
-        code_error (str): default value for logger drive. ``None`` as a default.
+        category (str): default value for error type. ``None`` as default.
+        code_error (str): default value for error identifier. ``None`` as a default.
 
     Returns:
-        logging.LoggerAdapter: return logger
+        IngeniaAdapter: return logger
 
     """
     logger = logging.getLogger(name)
     extra = {
         "axis": axis,
         "drive": drive,
+        "category": category,
         "code_error": code_error
     }
     return IngeniaAdapter(logger, extra)
