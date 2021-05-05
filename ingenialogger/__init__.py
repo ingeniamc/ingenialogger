@@ -1,4 +1,4 @@
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 """ str: Library version. """
 from .ingenialogger import get_logger, configure_logger, LoggingLevel
 from .parser import LogParser
