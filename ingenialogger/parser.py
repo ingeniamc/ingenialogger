@@ -3,7 +3,7 @@ import re
 REGEX_PARSER_LOG_STR = r'([^|]+) \| ([^|]+) \| ([^|]+) \| ([^|]+)'
 REGEX_PARSER_LOG = re.compile(REGEX_PARSER_LOG_STR)
 REGEX_PARSER_MSG_STR = r'(?:\(((?:\w+="[^"]+",? ?)+)\) )?(.+)'
-REGEX_PARSER_MSG = re.compile(REGEX_PARSER_MSG_STR)
+REGEX_PARSER_MSG = re.compile(REGEX_PARSER_MSG_STR, re.DOTALL)
 REGEX_PARSER_FIELDS_STR = r'(\w+)="([^"]+)"'
 REGEX_PARSER_FIELDS = re.compile(REGEX_PARSER_FIELDS_STR)
 
