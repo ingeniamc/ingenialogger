@@ -9,7 +9,7 @@ properties([
   buildDiscarder(logRotator(artifactNumToKeepStr: '10', daysToKeepStr: '30')),
 ])
 
-node('windows') {
+node('windows-slave') {
     deleteDir()
 
     stage('Windows checkout') {
