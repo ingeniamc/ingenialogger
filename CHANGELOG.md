@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.1] - 2021-06-15
+### Added
+- Python 3.6 and newer compatibility
+
 ## [0.2.0] - 2021-05-05
 ### Added
 - Add default values for custom_fields in get_logger function
