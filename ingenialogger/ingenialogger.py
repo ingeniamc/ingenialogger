@@ -94,7 +94,7 @@ def configure_file_handler(filename):
     """Configure a FileHandler.
 
     Args:
-        filename: Path to the file where the log will be stored.
+        filename (str): Path to the file where the log will be stored.
     """
 
     root_logger = logging.getLogger()
