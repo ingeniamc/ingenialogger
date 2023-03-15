@@ -28,5 +28,5 @@ logger = ingenialogger.get_logger(__name__)
 logger.user_info("User Info log", axis=2, drive="My drive")
 
 log_msg = log_queue.get().msg
-print(ingenialogger.LogParser.parse_message(log_msg))
+print(ingenialogger.LogParser.parse_log(log_msg))
 ```
