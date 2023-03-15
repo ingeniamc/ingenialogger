@@ -50,8 +50,8 @@ pipeline {
                     steps {
                         bat """
                             cd C:\\Users\\ContainerAdministrator\\ingenialogger
-                            python -m pipenv run pytest tests --junitxml=pytest_report.xml
-                            python -m pipenv run coverage xml --include=ingenialogger/*
+                            venv\\Scripts\\python.exe -m pytest tests --junitxml=pytest_report.xml
+                            venv\\Scripts\\python.exe -m coverage xml --include=ingenialogger/*
                             COPY pytest_report.xml ${env.WORKSPACE}\\pytest_report.xml
                             COPY coverage.xml ${env.WORKSPACE}\\coverage.xml
                         """
