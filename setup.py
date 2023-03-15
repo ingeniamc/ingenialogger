@@ -6,11 +6,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 with open('ingenialogger/__init__.py') as f:
-    __version = re.search(r"__version__\s+=\s+'(.*)'", f.read()).group(1)
+    __version = re.search(r'__version__\s+=\s+"(.*)"', f.read())[1]
 
 
 def get_docs_url():
-    return "https://distext.ingeniamc.com/doc/ingenialogger/{}".format(__version)
+    return f"https://distext.ingeniamc.com/doc/ingenialogger/{__version}"
 
 
 setuptools.setup(

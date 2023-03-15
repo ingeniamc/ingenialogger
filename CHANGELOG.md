@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0] - 2023-03-15
+### Added
+- configure_file_handler and configure_queue_handler
+- clean_ingenia_handlers
+
+### Changed
+- Now, configure_logger just configure the StreamHandler
+
 ## [0.2.1] - 2021-06-15
 ### Added
 - Python 3.6 and newer compatibility
