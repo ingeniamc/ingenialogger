@@ -40,19 +40,19 @@ def test_configure_queue_handler():
     log_queue = configure_queue_handler()
     root_logger.info("log 1")
     msg_1 = log_queue.get(block=False)
-    assert msg_1.msg == "log 1"
+    assert msg_1.msg == f"{msg_1.asctime} | test | INFO | log 1"
 
     configure_logger(level=logging.INFO)
     log_queue = configure_queue_handler()
     root_logger.info("log 2")
     msg_2 = log_queue.get(block=False)
-    assert msg_2.msg == "log 2"
+    assert msg_2.msg == f"{msg_2.asctime} | test | INFO | log 2"
 
     configure_logger(level=logging.INFO)
     log_queue = configure_queue_handler()
     root_logger.info("log 3")
     msg_3 = log_queue.get(block=False)
-    assert msg_3.msg == "log 3"
+    assert msg_3.msg == f"{msg_3.asctime} | test | INFO | log 3"
 
 
 def test_configure_file_handler():
