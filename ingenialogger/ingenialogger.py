@@ -10,11 +10,11 @@ FORMAT = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
 class LoggingLevel(IntEnum):
     NOTSET = 0
     DEBUG = 10
-    PUBLIC_DEBUG = 15,
+    PUBLIC_DEBUG = 15
     INFO = 20
-    PUBLIC_INFO = 25,
+    PUBLIC_INFO = 25
     WARNING = 30
-    PUBLIC_WARNING = 35,
+    PUBLIC_WARNING = 35
     ERROR = 40
     PUBLIC_FAULT = 43
     PUBLIC_ERROR = 45
@@ -48,7 +48,7 @@ class IngeniaAdapter(logging.LoggerAdapter):
         extra_str = ""
         if extra_list:
             extra_str = "({}) ".format(", ".join(extra_list))
-        return '%s%s' % (extra_str, msg), kwargs
+        return "%s%s" % (extra_str, msg), kwargs
 
 
 class IngeniaHandlers:
@@ -65,19 +65,12 @@ def check_logger_handler(logger, handler):
 ingenia_handlers = IngeniaHandlers()
 
 
-def configure_logger(level=logging.WARNING, queue=False, file=None):
+def configure_logger(level=logging.WARNING):
     """
-    Do Ingenia configuration for the logging system. By default configure a StreamHandler, but can configure a
-    QueueHandler and FileHandler.
+    Do Ingenia configuration for the logging system. By default configure a StreamHandler.
 
     Args:
         level (int): set the root logger level to the specified level. ``logging.WARNING`` by default.
-        queue (bool): if ``True``, configure a QueueHandler and return the queue, if ``False`` do nothing.
-         ``False`` by default.
-        file (str): if set, configure a FileHandler with this param as filename. ``None`` by default.
-
-    Returns:
-        queue.Queue or None: if queue is ``True`` return the queue, if it is ``False`` return ``None``.
     """
     logging.addLevelName(LoggingLevel.PUBLIC_DEBUG, LoggingLevel.PUBLIC_DEBUG.name)
     logging.addLevelName(LoggingLevel.PUBLIC_INFO, LoggingLevel.PUBLIC_INFO.name)
@@ -96,23 +89,49 @@ def configure_logger(level=logging.WARNING, queue=False, file=None):
     if not check_logger_handler(root_logger, ingenia_handlers.steam_handler):
         root_logger.addHandler(ingenia_handlers.steam_handler)
 
-    if file:
-        if ingenia_handlers.file_handler is None:
-            file_handler = logging.FileHandler(file)
-            file_handler.setFormatter(formatter)
-            ingenia_handlers.file_handler = file_handler
-        if not check_logger_handler(root_logger, ingenia_handlers.file_handler):
-            root_logger.addHandler(ingenia_handlers.file_handler)
 
-    if queue:
-        if ingenia_handlers.queue_handler is None:
-            log_queue = Queue()
-            queue_handler = QueueHandler(log_queue)
-            queue_handler.setFormatter(formatter)
-            ingenia_handlers.queue_handler = queue_handler
-        if not check_logger_handler(root_logger, ingenia_handlers.queue_handler):
-            root_logger.addHandler(ingenia_handlers.queue_handler)
-        return ingenia_handlers.queue_handler.queue
+def configure_file_handler(filename):
+    """Configure a FileHandler.
+
+    Args:
+        filename (str): Path to the file where the log will be stored.
+    """
+
+    root_logger = logging.getLogger()
+    formatter = logging.Formatter(FORMAT)
+    print(ingenia_handlers)
+    if ingenia_handlers.file_handler is None:
+        file_handler = logging.FileHandler(filename)
+        file_handler.setFormatter(formatter)
+        ingenia_handlers.file_handler = file_handler
+    if not check_logger_handler(root_logger, ingenia_handlers.file_handler):
+        root_logger.addHandler(ingenia_handlers.file_handler)
+
+
+def configure_queue_handler():
+    """Configure a QueueHandler.
+
+    Returns:
+        queue.Queue: Log queue.
+    """
+
+    root_logger = logging.getLogger()
+    formatter = logging.Formatter(FORMAT)
+
+    if ingenia_handlers.queue_handler is None:
+        log_queue = Queue()
+        queue_handler = QueueHandler(log_queue)
+        queue_handler.setFormatter(formatter)
+        ingenia_handlers.queue_handler = queue_handler
+    if not check_logger_handler(root_logger, ingenia_handlers.queue_handler):
+        root_logger.addHandler(ingenia_handlers.queue_handler)
+    return ingenia_handlers.queue_handler.queue
+
+
+def clean_ingenia_handlers():
+    """Clean ingenia handlers."""
+    global ingenia_handlers
+    ingenia_handlers = IngeniaHandlers()
 
 
 def get_logger(name, axis=None, drive=None, category=None, code_error=None):
@@ -131,10 +150,5 @@ def get_logger(name, axis=None, drive=None, category=None, code_error=None):
 
     """
     logger = logging.getLogger(name)
-    extra = {
-        "axis": axis,
-        "drive": drive,
-        "category": category,
-        "code_error": code_error
-    }
+    extra = {"axis": axis, "drive": drive, "category": category, "code_error": code_error}
     return IngeniaAdapter(logger, extra)

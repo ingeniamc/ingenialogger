@@ -12,4 +12,4 @@ def reset_logging():
     logger = logging.getLogger()
     logger.handlers = []
     reload(ingenialogger)
-
+    ingenialogger.clean_ingenia_handlers()
