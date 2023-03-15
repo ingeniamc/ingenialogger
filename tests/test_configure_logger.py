@@ -68,20 +68,26 @@ def test_configure_file_handler():
     root_logger.info("log")
     assert os.path.exists(filename)
 
-    with open(filename, 'r') as log_file:
+    with open(filename, "r") as log_file:
         log_lines = log_file.readlines()
     assert len(log_lines) == 1
 
-@pytest.mark.parametrize("level", [LoggingLevel.DEBUG,
-                                   LoggingLevel.PUBLIC_DEBUG,
-                                   LoggingLevel.INFO,
-                                   LoggingLevel.PUBLIC_INFO,
-                                   LoggingLevel.WARNING,
-                                   LoggingLevel.PUBLIC_WARNING,
-                                   LoggingLevel.ERROR,
-                                   LoggingLevel.PUBLIC_FAULT,
-                                   LoggingLevel.PUBLIC_ERROR,
-                                   LoggingLevel.CRITICAL])
+
+@pytest.mark.parametrize(
+    "level",
+    [
+        LoggingLevel.DEBUG,
+        LoggingLevel.PUBLIC_DEBUG,
+        LoggingLevel.INFO,
+        LoggingLevel.PUBLIC_INFO,
+        LoggingLevel.WARNING,
+        LoggingLevel.PUBLIC_WARNING,
+        LoggingLevel.ERROR,
+        LoggingLevel.PUBLIC_FAULT,
+        LoggingLevel.PUBLIC_ERROR,
+        LoggingLevel.CRITICAL,
+    ],
+)
 def test_configure_logger_levels(caplog, level):
     root_logger = logging.getLogger("test")
     configure_logger(level=logging.NOTSET)

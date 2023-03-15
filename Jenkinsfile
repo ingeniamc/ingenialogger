@@ -42,7 +42,7 @@ pipeline {
                     steps {
                         bat """
                             cd C:\\Users\\ContainerAdministrator\\ingenialogger
-                            venv\\Scripts\\python.exe -m black -l 100 --check ingeniamotion tests
+                            venv\\Scripts\\python.exe -m black -l 100 --check ingenialogger tests
                         """
                     }
                 }
