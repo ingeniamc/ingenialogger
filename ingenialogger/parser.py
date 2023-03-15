@@ -1,6 +1,6 @@
 import re
 
-REGEX_PARSER_LOG_STR = r'([^|]+) \| ([^|]+) \| ([^|]+) \| ([^|]+)'
+REGEX_PARSER_LOG_STR = r"([^|]+) \| ([^|]+) \| ([^|]+) \| ([^|]+)"
 REGEX_PARSER_LOG = re.compile(REGEX_PARSER_LOG_STR)
 REGEX_PARSER_MSG_STR = r'(?:\(((?:\w+="[^"]+",? ?)+)\) )?(.+)'
 REGEX_PARSER_MSG = re.compile(REGEX_PARSER_MSG_STR)
@@ -9,7 +9,6 @@ REGEX_PARSER_FIELDS = re.compile(REGEX_PARSER_FIELDS_STR)
 
 
 class LogParser:
-
     @staticmethod
     def parse_log(log):
         """
@@ -65,10 +64,7 @@ class LogParser:
                 }
         """
         msg_match = REGEX_PARSER_MSG.match(msg)
-        return {
-            "message": msg_match.group(2),
-            "fields": LogParser.parse_fields(msg_match.group(1))
-        }
+        return {"message": msg_match.group(2), "fields": LogParser.parse_fields(msg_match.group(1))}
 
     @staticmethod
     def parse_fields(fields_str):

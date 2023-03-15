@@ -10,11 +10,11 @@ FORMAT = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
 class LoggingLevel(IntEnum):
     NOTSET = 0
     DEBUG = 10
-    PUBLIC_DEBUG = 15,
+    PUBLIC_DEBUG = 15
     INFO = 20
-    PUBLIC_INFO = 25,
+    PUBLIC_INFO = 25
     WARNING = 30
-    PUBLIC_WARNING = 35,
+    PUBLIC_WARNING = 35
     ERROR = 40
     PUBLIC_FAULT = 43
     PUBLIC_ERROR = 45
@@ -48,7 +48,7 @@ class IngeniaAdapter(logging.LoggerAdapter):
         extra_str = ""
         if extra_list:
             extra_str = "({}) ".format(", ".join(extra_list))
-        return '%s%s' % (extra_str, msg), kwargs
+        return "%s%s" % (extra_str, msg), kwargs
 
 
 class IngeniaHandlers:
@@ -150,10 +150,5 @@ def get_logger(name, axis=None, drive=None, category=None, code_error=None):
 
     """
     logger = logging.getLogger(name)
-    extra = {
-        "axis": axis,
-        "drive": drive,
-        "category": category,
-        "code_error": code_error
-    }
+    extra = {"axis": axis, "drive": drive, "category": category, "code_error": code_error}
     return IngeniaAdapter(logger, extra)
